@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile App Starter</title>
+  <!-- Link to the Tailwind CSS CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts for "Inter" font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /*
+      Custom styles for the app.
+      Using the 'Inter' font and ensuring full height for mobile devices.
+    */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- App header and navigation buttons -->
+  <header class="w-full max-w-sm mb-8">
+    <h1 class="text-3xl font-bold text-center text-indigo-700">
+      Mobile App Starter
+    </h1>
+    <p class="text-center text-gray-600 mt-2">
+      A simple app with multiple pages.
+    </p>
+    <nav class="flex justify-center mt-4 space-x-4">
+      <button id="home-btn"
+        class="px-4 py-2 rounded-full font-semibold transition-colors bg-indigo-600 text-white shadow-lg">
+        Home
+      </button>
+      <button id="about-btn"
+        class="px-4 py-2 rounded-full font-semibold transition-colors bg-white text-indigo-600 border border-indigo-600 hover:bg-indigo-100">
+        About
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main content area -->
+  <main class="w-full max-w-sm bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center">
+    <!-- Home Page Content -->
+    <div id="home-page" class="w-full">
+      <div id="welcome-message" class="text-center hidden">
+        <p class="text-xl text-gray-800 font-semibold">
+          Hello, <span id="user-name" class="text-indigo-600"></span>!
+        </p>
+        <p class="text-sm text-gray-500 mt-2">
+          Your name is saved locally.
+        </p>
+        <!-- Button to clear the saved name -->
+        <button id="clear-btn"
+          class="mt-4 px-6 py-2 bg-red-500 text-white font-semibold rounded-full shadow-lg hover:bg-red-600 transition-colors">
+          Clear Name
+        </button>
+      </div>
+
+      <!-- Form to enter the name -->
+      <form id="name-form" class="w-full">
+        <label for="name-input" class="block text-gray-700 font-medium mb-2">
+          Enter your name:
+        </label>
+        <input
+          type="text"
+          id="name-input"
+          name="name"
+          placeholder="e.g., Jane Doe"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          required
+        />
+        <!-- Button to save the name -->
+        <button
+          type="submit"
+          class="w-full mt-4 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
+          Save Name
+        </button>
+      </form>
+    </div>
+
+    <!-- About Page Content -->
+    <div id="about-page" class="text-center hidden">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">
+        About This App
+      </h2>
+      <p class="text-gray-600">
+        This is a simple front-end mobile app starter built with React and Tailwind CSS. It's designed to showcase basic concepts like state management, local storage, and page navigation.
+      </p>
+      <p class="text-gray-600 mt-2">
+        You can easily expand on this foundation to build more complex features.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer or additional info -->
+  <footer class="mt-8 text-center text-gray-500 text-sm">
+    <p>Built with plain HTML, CSS, and JS</p>
+  </footer>
+
+  <script>
+    // Get references to all the HTML elements we will need to interact with
+    const homeBtn = document.getElementById('home-btn');
+    const aboutBtn = document.getElementById('about-btn');
+    const homePage = document.getElementById('home-page');
+    const aboutPage = document.getElementById('about-page');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const nameForm = document.getElementById('name-form');
+    const userNameSpan = document.getElementById('user-name');
+    const nameInput = document.getElementById('name-input');
+    const clearBtn = document.getElementById('clear-btn');
+
+    // Function to show a specific page and hide the others
+    function showPage(pageId) {
+      if (pageId === 'home') {
+        homePage.classList.remove('hidden');
+        aboutPage.classList.add('hidden');
+        homeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
+        homeBtn.classList.remove('bg-white', 'text-indigo-600', 'border', 'border-indigo-600', 'hover:bg-indigo-100');
+        aboutBtn.classList.add('bg-white', 'text-indigo-600', 'border', 'border-indigo-600', 'hover:bg-indigo-100');
+        aboutBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg');
+      } else if (pageId === 'about') {
+        aboutPage.classList.remove('hidden');
+        homePage.classList.add('hidden');
+        aboutBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
+        aboutBtn.classList.remove('bg-white', 'text-indigo-600', 'border', 'border-indigo-600', 'hover:bg-indigo-100');
+        homeBtn.classList.add('bg-white', 'text-indigo-600', 'border', 'border-indigo-600', 'hover:bg-indigo-100');
+        homeBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg');
+      }
+    }
+
+    // Function to check and display the user's name
+    function renderNameStatus() {
+      const storedName = localStorage.getItem('userName');
+      if (storedName) {
+        // If a name is found, show the welcome message and hide the form
+        userNameSpan.textContent = storedName;
+        welcomeMessage.classList.remove('hidden');
+        nameForm.classList.add('hidden');
+      } else {
+        // If no name is found, show the form and hide the welcome message
+        welcomeMessage.classList.add('hidden');
+        nameForm.classList.remove('hidden');
+      }
+    }
+
+    // Add event listeners for navigation buttons
+    homeBtn.addEventListener('click', () => showPage('home'));
+    aboutBtn.addEventListener('click', () => showPage('about'));
+
+    // Handle form submission to save the name
+    nameForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent the default form behavior
+      const name = nameInput.value;
+      localStorage.setItem('userName', name);
+      renderNameStatus(); // Update the UI
+    });
+
+    // Handle the clear button click
+    clearBtn.addEventListener('click', () => {
+      localStorage.removeItem('userName');
+      renderNameStatus(); // Update the UI
+    });
+
+    // Initial render when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNameStatus();
+      showPage('home'); // Ensure the home page is shown initially
+    });
+
+  </script>
+</body>
+</html>
